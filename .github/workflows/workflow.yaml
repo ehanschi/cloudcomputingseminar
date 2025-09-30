@@ -31,7 +31,7 @@ jobs:
       - name: Build docker image
         working-directory: Hello
         run: |
-          docker build -t hello -file ./src/main/docker/Dockerfile .
+          docker build -t hello --file ./src/main/docker/Dockerfile .
           docker image ls
           docker run hello
       - run: echo "🍏 This job's status is ${{ job.status }}."
