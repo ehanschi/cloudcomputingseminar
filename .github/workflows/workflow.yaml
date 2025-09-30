@@ -27,5 +27,11 @@ jobs:
           ls ${{ github.workspace }}
           ls ./target
           pwd
-          java -jar target/Hello-1.0-SNAPSHOT.jar
+          java -jar target/hello-1.0-SNAPSHOT.jar
+      - name: Build docker image
+        working-directory: Hello
+        run: |
+          docker build -t hello -file ./src/main/docker/Dockerfile .
+          docker image ls
+          docker run hello
       - run: echo "🍏 This job's status is ${{ job.status }}."
