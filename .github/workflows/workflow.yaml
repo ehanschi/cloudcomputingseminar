@@ -18,21 +18,21 @@ jobs:
           distribution: 'temurin' # See 'Supported distributions' for available options
           java-version: '21'
           cache: 'maven'
-          cache-dependency-path: "${{ BACKEND_HOME }}/pom.xml"
+          cache-dependency-path: "${{ env.BACKEND_HOME }}/pom.xml"
       - name: Build with Maven
-        working-directory: ${{ BACKEND_HOME }}
+        working-directory: ${{ env.BACKEND_HOME }}
         run: mvn -B package
       - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
       - run: echo "🖥️ The workflow is now ready to test your code on the runner."
       - name: List files in the repository
-        working-directory: ${{ BACKEND_HOME }}
+        working-directory: ${{ env.BACKEND_HOME }}
         run: |
           ls ${{ github.workspace }}
           ls ./target
           pwd
 #          java -jar target/hello-1.0-SNAPSHOT.jar
       - name: Build docker image
-        working-directory: ${{ BACKEND_HOME }}
+        working-directory: ${{ env.BACKEND_HOME }}
         run: |
           docker build -t hello --file ./src/main/docker/Dockerfile .
           docker image ls
