@@ -59,4 +59,4 @@ jobs:
             file: ${{ env.BACKEND_HOME }}/src/main/docker/Dockerfile
             platforms: linux/amd64, linux/arm64
             push: true
-            tags: ghcr.io/${{ env.BACKEND_HOME }}/hello:latest
+            tags: ghcr.io/ehanschi/hello:latest
