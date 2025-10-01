@@ -3,7 +3,9 @@ run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 on: [push]
 env:
   BACKEND_HOME: ./vehicle
-
+permissions:
+  packages: write
+  contents: read
 jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-24.04
@@ -19,6 +21,12 @@ jobs:
           java-version: '21'
           cache: 'maven'
           cache-dependency-path: "${{ env.BACKEND_HOME }}/pom.xml"
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{github.actor}}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build with Maven
         working-directory: ${{ env.BACKEND_HOME }}
         run: mvn -B package
@@ -37,3 +45,11 @@ jobs:
           docker build -t hello --file ./src/main/docker/Dockerfile .
           docker image ls
       - run: echo "🍏 This job's status is ${{ job.status }}."
+      - name: Build and push classroom-demo
+        uses: docker/build-push-action@v5
+        with:
+            context: ${{ env.BACKEND_HOME }}
+            file: ${{ env.BACKEND_HOME }}/src/main/docker/Dockerfile
+            platforms: linux/amd64, linux/arm64
+            push: true
+            tags: ghcr.io/${{ env.BACKEND_HOME }}/hello:latest
