@@ -38,15 +38,22 @@ jobs:
           ls ${{ github.workspace }}
           ls ./target
           pwd
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
 #          java -jar target/hello-1.0-SNAPSHOT.jar
-      - name: Build docker image
-        working-directory: ${{ env.BACKEND_HOME }}
-        run: |
-          docker build -t hello --file ./src/main/docker/Dockerfile .
-          docker image ls
-      - run: echo "🍏 This job's status is ${{ job.status }}."
-      - name: Build and push classroom-demo
-        uses: docker/build-push-action@v5
+#      - name: Build docker image
+#        working-directory: ${{ env.BACKEND_HOME }}
+#        run: |
+#          docker build -t hello --file ./src/main/docker/Dockerfile .
+#          docker image ls
+#      - run: echo "🍏 This job's status is ${{ job.status }}."
+      - name: Build and push
+        uses: docker/build-push-action@v6
         with:
             context: ${{ env.BACKEND_HOME }}
             file: ${{ env.BACKEND_HOME }}/src/main/docker/Dockerfile
